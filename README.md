@@ -1,2 +1,2 @@
 # docker-compose
-Docker image based on official docker one that includes docker-compose
+Docker image based on official debian jessie image. Includes docker and docker-compose
