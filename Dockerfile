@@ -9,6 +9,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 	apt-utils \
 	ca-certificates \
 	curl \
+	make \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& echo "\nexport TERM=xterm" >> /etc/bash.bashrc
 
