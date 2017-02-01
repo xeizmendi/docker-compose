@@ -1,15 +1,16 @@
 FROM debian:jessie
 
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.12.5
-ENV DOCKER_SHA256 0058867ac46a1eba283e2441b1bb5455df846144f9d9ba079e97655399d4a2c6
-ENV COMPOSE_VERSION 1.9.0
+ENV DOCKER_VERSION 1.13.0
+ENV DOCKER_SHA256 fc194bb95640b1396283e5b23b5ff9d1b69a5e418b5b3d774f303a7642162ad6
+ENV COMPOSE_VERSION 1.10.0
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	apt-utils \
 	ca-certificates \
 	curl \
 	make \
+	unzip \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& echo "\nexport TERM=xterm" >> /etc/bash.bashrc
 
