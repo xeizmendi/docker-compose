@@ -1,8 +1,8 @@
 FROM debian:jessie
 
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.13.0
-ENV DOCKER_SHA256 fc194bb95640b1396283e5b23b5ff9d1b69a5e418b5b3d774f303a7642162ad6
+ENV DOCKER_VERSION 1.12.6
+ENV DOCKER_SHA256 cadc6025c841e034506703a06cf54204e51d0cadfae4bae62628ac648d82efdd
 ENV COMPOSE_VERSION 1.10.0
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
