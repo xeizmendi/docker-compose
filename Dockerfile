@@ -3,7 +3,7 @@ FROM debian:jessie
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 17.05.0-ce
 ENV DOCKER_SHA256 340e0b5a009ba70e1b644136b94d13824db0aeb52e09071410f35a95d94316d9
-ENV COMPOSE_VERSION 1.13.0
+ENV COMPOSE_VERSION 1.14.0
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	apt-utils \
@@ -11,6 +11,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 	curl \
 	make \
 	unzip \
+	git-core \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& echo "\nexport TERM=xterm" >> /etc/bash.bashrc
 
