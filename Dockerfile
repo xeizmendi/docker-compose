@@ -1,9 +1,9 @@
-FROM debian:jessie
+FROM debian:stretch
 
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 17.05.0-ce
-ENV DOCKER_SHA256 340e0b5a009ba70e1b644136b94d13824db0aeb52e09071410f35a95d94316d9
-ENV COMPOSE_VERSION 1.14.0
+ENV DOCKER_VERSION 17.06.2-ce
+ENV DOCKER_CHANNEL stable
+ENV DOCKER_SHA256 a15f62533e773c40029a61784a5a1c5bc7dd21e0beb5402fda109f80e1f2994d
+ENV COMPOSE_VERSION 1.16.1
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	apt-utils \
@@ -16,7 +16,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 	&& echo "\nexport TERM=xterm" >> /etc/bash.bashrc
 
 RUN set -x \
-	&& curl -fSL "http://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
+	&& curl -fSL "http://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
 	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
 	&& tar -xzvf docker.tgz \
 	&& mv docker/* /usr/local/bin/ \
