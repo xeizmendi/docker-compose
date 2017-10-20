@@ -1,8 +1,8 @@
 FROM debian:stretch
 
-ENV DOCKER_VERSION 17.06.2-ce
+ENV DOCKER_VERSION 17.09.0-ce
 ENV DOCKER_CHANNEL stable
-ENV DOCKER_SHA256 a15f62533e773c40029a61784a5a1c5bc7dd21e0beb5402fda109f80e1f2994d
+ENV DOCKER_SHA256 a9e90a73c3cdfbf238f148e1ec0eaff5eb181f92f35bdd938fd7dab18e1c4647
 ENV COMPOSE_VERSION 1.16.1
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -11,6 +11,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 	curl \
 	make \
 	unzip \
+	zip \
 	git-core \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& echo "\nexport TERM=xterm" >> /etc/bash.bashrc
@@ -32,4 +33,4 @@ COPY docker-entrypoint.sh /usr/local/bin
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["sh"]
+CMD ["bash"]
