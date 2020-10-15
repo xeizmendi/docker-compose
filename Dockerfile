@@ -1,35 +1,25 @@
-FROM debian:stretch
+FROM docker:18.06.2 as docker
+FROM alpine:3.8
 
-ENV DOCKER_VERSION 17.09.0-ce
-ENV DOCKER_CHANNEL stable
-ENV DOCKER_SHA256 a9e90a73c3cdfbf238f148e1ec0eaff5eb181f92f35bdd938fd7dab18e1c4647
-ENV COMPOSE_VERSION 1.16.1
+ENV GLIBC 2.28-r0
+ENV COMPOSE_VERSION 1.23.2
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-	apt-utils \
-	ca-certificates \
-	curl \
-	make \
-	unzip \
-	zip \
-	git-core \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& echo "\nexport TERM=xterm" >> /etc/bash.bashrc
+RUN apk update && apk add --no-cache openssl ca-certificates curl libgcc make unzip zip git openssh-client bash parallel grep sed && \
+    curl -fsSL -o /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    curl -fsSL -o glibc-$GLIBC.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC/glibc-$GLIBC.apk && \
+    apk add --no-cache glibc-$GLIBC.apk && \
+    ln -s /lib/libz.so.1 /usr/glibc-compat/lib/ && \
+    ln -s /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib && \
+    ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib && \
+    rm /etc/apk/keys/sgerrand.rsa.pub glibc-$GLIBC.apk
 
-RUN set -x \
-	&& curl -fSL "http://download.docker.com/linux/static/${DOCKER_CHANNEL}/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
-	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
-	&& tar -xzvf docker.tgz \
-	&& mv docker/* /usr/local/bin/ \
-	&& rmdir docker \
-	&& rm docker.tgz \
-	&& docker -v
+COPY --from=docker /usr/local/bin/docker /usr/local/bin/docker
+COPY --from=docker /usr/local/bin/modprobe /usr/local/bin/modprobe
+COPY --from=docker /usr/local/bin/docker-entrypoint.sh /usr/local/bin/
 
 RUN set -x \
-	&& curl -fSL http://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose \
+	&& curl -fSL https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose \
 	&& chmod +x /usr/local/bin/docker-compose
-
-COPY docker-entrypoint.sh /usr/local/bin
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
